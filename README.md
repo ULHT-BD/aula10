@@ -1,16 +1,15 @@
 # aula10
-Nesta aula olhamos para restrições de integridade referencial. Como criar ligações entre relações e quais as implicações que estas restrições trazem.
+Nesta aula olhamos para junções horizontais como forma de obter conteúdo de mais de uma relação através de relações. Vemos exemplos de vários tipos de junções internas INNER JOIN e externas OUTER JOIN.
+Falamos ainda sobre nested queries como forma de efetuar junções horizontais.
 Bom trabalho!
 
 [0. Requisitos](#0-requisitos)
 
-[1. Integridade Referencial](#1-integridade-referencial)
+[1. Junção Horizontal](#1-junção-horizontal)
 
-[2. Actions](#2-actions)
+[2. Nested Query](#2-nested-query)
 
-[3. Trabalho de Casa](#3-trabalho-de-casa)
-
-[4. Resoluções](#4-resoluções)
+[3. Resoluções](#3-resoluções)
 
 [Bibliografia e Referências](#bibliografia-e-referências)
 
@@ -25,58 +24,55 @@ Caso já tenha o docker pode iniciá-lo usando o comando ```docker start mysgbd`
 Deve também ter o cliente DBeaver.
 
 ## 1. Integridade Referencial
-A integridade referencial permite criar relações entre relações e em SQL é implementada através da definição de chaves estrangeiras com a cláusula ```FOREIGN KEY```.
-No momento de criação de uma relação podemos definir uma chave estrangeira usando a sintaxe
+A junção horizontal permite recuperar dados de várias relações em simultâneo a efetuando associações através de valores em chaves estrangeiras. Corresponde a efetuar um produto cartesiano seguido de uma seleção. Em SQL esta operacao e conseguida com recurso a clausula JOIN.
+
+A juncao pode ser feita de varias formas: INNER JOIN (juncao interna) ou OUTER JOIN (juncao externa) a esquerda ou a direita.
+
+A sintaxe geral e:
 
 ``` sql
-CREATE TABLE tabela (
-  definicao-de-colunas,
-  FOREIGN KEY (coluna) REFERENCES tabela-referencia(coluna)
+SELECT t1.col1, t1.col2, t2.col3, t2.col4 
+FROM tabela1 t1
+  [LEFT/RIGHT] [INNER/OUTER] JOIN tabela2 t2 ON t1.col1 = t2.col3
 );
 ```
 
-ou se quisermos, explicitando o nome da restrição de integridade (no exemplo acima um nome será atribuído automaticamente):
+Por exemplo,
+<img width="759" alt="image" src="https://user-images.githubusercontent.com/32137262/204396892-a62fe137-447b-4958-a727-980d4bbd969c.png">
+
+Podemos obter informação sobre veiculos (matricula, marca) e respetivos proprietarios (nif e nome) usando a query:
 
 ``` sql
-CREATE TABLE tabela (
-  definicao-de-colunas,
-  CONSTRAINT fk_tabela_tabelaref FOREIGN KEY (coluna) REFERENCES tabela-referencia(coluna)
-);
+SELECT
+  v.matricula, v.marca, p.nif, p.nome
+FROM veiculo v JOIN proprietário p ON v.nif = p.nif;
 ```
 
-Podemos alterar uma tabela existente adicionando restrições de integridade:
+O resultado da execução da query é:
+<img width="602" alt="image" src="https://user-images.githubusercontent.com/32137262/204397360-22b5e0ab-5254-4fe5-b009-ec46d6ce144f.png">
 
-``` sql
-ALTER TABLE tabela
-ADD CONSTRAINT fk_tabela_tabelaref FOREIGN KEY (coluna) REFERENCES tabela-referencia(coluna)
-);
-```
 
-ou removendo restrições de integridade:
+O quadro seguinte resume os varios tipos de JOIN.
+<img width="848" alt="image" src="https://user-images.githubusercontent.com/32137262/204397593-6118a241-1d2b-430b-861f-a0c0f901a92c.png">
 
-``` sql
-ALTER TABLE tabela DROP CONSTRAINT;
-```
 
 ### Exercícios
-Escreva o código SQL que permite:
-0. Crie a Base de Dados BD_Empresa
-1. Construir uma base de dados de acordo com o diagrama seguinte, onde um empregado trabalha num departamento e num departamento podem trabalhar vários empregados:
-<img width="747" alt="image" src="https://user-images.githubusercontent.com/32137262/203181180-9e39a698-902c-4198-ab1f-04cb5ad9cb1f.png">
+Considere a Base de Dados seguinte:
 
-2. Insira os tuplos
-- trabalhador Teresa Costeira, CC 12345678, que trabalha no departamento de IT orçamento 150.000€ desde '28-03-2022'
-- trabalhador Pedro Matias, CC 43218765, que trabalha no departamento de RH orçamento 80.000€ desde '10-09-2021'
-- experimente apagar o departamento de IT
+Disciplina(id, nome, carga_horaria, prof_id), prof_id:FK(Professor)
 
-3. Construir uma base de dados de acordo com o diagrama seguinte, onde um empregado pode trabalhar em vários departamentos e num departamento podem trabalhar vários empregados:
-<img width="747" alt="image" src="https://user-images.githubusercontent.com/32137262/203181590-ae62094b-e265-4af0-924f-233a0290aecb.png">
+Professor(nif, nome, telefone, email) 
 
-4. Insira os tuplos
-- trabalhadora Teresa Costeira, CC 12345678, que trabalha no departamento de IT orçamento 150.000€ desde '28-03-2022'
-- trabalhador Pedro Matias, CC 43218765, que trabalha no departamento de RH orçamento 80.000€ desde '10-09-2021'
-- trabalhadora Luisa Macedo, CC 12344321, que trabalha no departamento de RH orçamento 80.000€ desde '12-11-2021'
-- experimente apagar o departamento de IT
+Escreva o código SQL que permite obter:
+1. Criar as relações Disciplina e Professor e inserir alguns tuplos que permitam testar as queries seguintes 
+
+2. Nome das disciplinas (e.g. Fundamentos de Programação, Programação I, etc) cuja carga horário é superior a 20h
+
+3. Informação de id e nome de disciplinas e respetivos professores
+
+4. Professores de disciplinas com carga horária superior a 40h
+
+5. Disciplinas sem professores associados
 
 
 ## 2. Actions
@@ -140,13 +136,13 @@ Bom trabalho!
 
 NOTA: submeta a sua resposta ao trabalho de casa no moodle contendo a criação de base de dados, tabelas e índices num script sql. O ficheiro de texto com o nome TPC_a09_[N_ALUNO].sql (exemplo: TPC_a09_12345.sql para o aluno número 12345).
 
-## 4. Resoluções
-[Resolução dos exercícios em aula](https://github.com/ULHT-BD/aula09/blob/main/aula09_resolucao.sql)
+## 3. Resoluções
+[Resolução dos exercícios em aula](https://github.com/ULHT-BD/aula09/blob/main/aula10_resolucao.sql)
 
 [Resolução do trabalho de casa](https://github.com/ULHT-BD/aula09/blob/main/TPC_a09_resolucao.sql)
 
 ## Bibliografia e Referências
-* [Slides aula (+material extra)](https://github.com/ULHT-BD/aula09/blob/main/Aula09.pdf) 
+* [Slides aula (+material extra)](https://github.com/ULHT-BD/aula10/blob/main/Aula10.pdf) 
 * [mysqltutorial - CREATE TABLE](https://www.mysqltutorial.org/mysql-create-table/)
 * [mysqltutorial - Data Types](https://www.mysqltutorial.org/mysql-data-types.aspx)
 * [MySQL - Data Types](https://dev.mysql.com/doc/refman/8.0/en/data-types.html)
