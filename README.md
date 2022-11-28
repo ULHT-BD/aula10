@@ -38,6 +38,7 @@ FROM tabela1 t1
 ```
 
 Por exemplo,
+
 <img width="759" alt="image" src="https://user-images.githubusercontent.com/32137262/204396892-a62fe137-447b-4958-a727-980d4bbd969c.png">
 
 Podemos obter informação sobre veiculos (matricula, marca) e respetivos proprietarios (nif e nome) usando a query:
@@ -49,10 +50,12 @@ FROM veiculo v JOIN proprietário p ON v.nif = p.nif;
 ```
 
 O resultado da execução da query é:
+
 <img width="602" alt="image" src="https://user-images.githubusercontent.com/32137262/204397360-22b5e0ab-5254-4fe5-b009-ec46d6ce144f.png">
 
 
 O quadro seguinte resume os varios tipos de JOIN.
+
 <img width="848" alt="image" src="https://user-images.githubusercontent.com/32137262/204397593-6118a241-1d2b-430b-861f-a0c0f901a92c.png">
 
 
@@ -111,30 +114,6 @@ Altere a base de dados que criou no exercício anterior para o seguinte:
 2. Experimente remover o departamento IT e alterar o departamento RH
 3. Altere a BD em 1.3 tal que quando um departamento é removido, os seus empregados deixam de pertencer a qualquer departamento.
 
-
-## 3. Trabalho de Casa
-*Notas:*
-
-1. Caso tenha encontrado erros de permissões e/ou não tenha conseguido criar a nova base de dados deisiflix nos trabalhos anteriores verifique ou altere o nome de utilizador da sua ligação ao MariaDB para ```root``` (a password deve ser ```admin```)
-
-<img width="685" alt="image" src="https://user-images.githubusercontent.com/32137262/202258030-d9e452f7-4cde-4aa3-b42f-a403d59e80cc.png">
-
-2. No [trabalho de casa da aula anterior](https://github.com/ULHT-BD/aula08/blob/main/README.md#3-trabalho-de-casa) foi pedida a criação e carregamento de dados dos ficheiros nas relações criadas, possivel via comando ```LOAD``` ou interface dbeaver (caso não tenha conseguido resolver, consulte a [resolução](https://github.com/ULHT-BD/aula08/blob/main/README.md#4-resolu%C3%A7%C3%B5es)). Para quem usou o dbeaver, duas ajudas:
-
-* o load assume a primeira linha como nome da coluna pelo que esta não é inserida. Sugestão adicione uma primeira linha com nomes das colunas antes da importação.
-
-* a conversão de dados no load_movies tem dificuldade em converter strings que contenham espaços (e.g. ' 123.0') em números. Sugestão abre o ficheiro e faça find and replace de ' ,' ou ', ' por '.'
-
-### Exercício
-Escreva o código SQL que permite criar as relações (movies, movie_genre, genre) definidas no modelo 1 do enunciado do projeto, incluindo as respetivas restrições de integridade referencial definidas no esquema físico:
-
-<img width="685" alt="image" src="https://user-images.githubusercontent.com/32137262/203660157-2dae0678-bcc6-4909-ab28-45aa62b410ec.png">
-
-Extra: se quiser adiantar o seu trabalho de projeto, crie igualmente as restantes relações e restrições.
-
-Bom trabalho!
-
-NOTA: submeta a sua resposta ao trabalho de casa no moodle contendo a criação de base de dados, tabelas e índices num script sql. O ficheiro de texto com o nome TPC_a09_[N_ALUNO].sql (exemplo: TPC_a09_12345.sql para o aluno número 12345).
 
 ## 3. Resoluções
 [Resolução dos exercícios em aula](https://github.com/ULHT-BD/aula09/blob/main/aula10_resolucao.sql)
