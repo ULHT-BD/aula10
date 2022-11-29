@@ -1,5 +1,5 @@
 # aula10
-Nesta aula olhamos para junções horizontais como forma de obter conteúdo de mais de uma relação através de relações. Vemos exemplos de vários tipos de junções internas INNER JOIN e externas OUTER JOIN.
+Nesta aula olhamos para junções horizontais como forma de obter conteúdo de mais de uma relação através de relações. Vemos exemplos de vários tipos de junções internas ```INNER JOIN``` e externas ```OUTER JOIN```.
 Falamos ainda sobre nested queries como forma de efetuar junções horizontais.
 Bom trabalho!
 
@@ -7,9 +7,7 @@ Bom trabalho!
 
 [1. Junção Horizontal](#1-junção-horizontal)
 
-[2. Nested Query](#2-nested-query)
-
-[3. Resoluções](#3-resoluções)
+[2. Resoluções](#2-resoluções)
 
 [Bibliografia e Referências](#bibliografia-e-referências)
 
@@ -23,10 +21,10 @@ Caso já tenha o docker pode iniciá-lo usando o comando ```docker start mysgbd`
 
 Deve também ter o cliente DBeaver.
 
-## 1. Integridade Referencial
-A junção horizontal permite recuperar dados de várias relações em simultâneo a efetuando associações através de valores em chaves estrangeiras. Corresponde a efetuar um produto cartesiano seguido de uma seleção. Em SQL esta operacao e conseguida com recurso a clausula JOIN.
+## 1. Junção Horizontal
+A junção horizontal permite recuperar dados de várias relações em simultâneo a efetuando associações através de valores em chaves estrangeiras. Corresponde a efetuar um produto cartesiano seguido de uma seleção. Em SQL esta operacao e conseguida com recurso a clausula ```JOIN```.
 
-A juncao pode ser feita de varias formas: INNER JOIN (juncao interna) ou OUTER JOIN (juncao externa) a esquerda ou a direita.
+A juncao pode ser feita de varias formas: ```INNER JOIN``` (juncao interna) ou ```OUTER JOIN``` (juncao externa) a esquerda ou a direita.
 
 A sintaxe geral e:
 
@@ -54,10 +52,18 @@ O resultado da execução da query é:
 <img width="602" alt="image" src="https://user-images.githubusercontent.com/32137262/204397360-22b5e0ab-5254-4fe5-b009-ec46d6ce144f.png">
 
 
-O quadro seguinte resume os varios tipos de JOIN.
+O quadro seguinte resume os varios tipos de ```JOIN```.
 
 <img width="848" alt="image" src="https://user-images.githubusercontent.com/32137262/204397593-6118a241-1d2b-430b-861f-a0c0f901a92c.png">
 
+Vimos nas aulas anteriores que podemos usar a clausula ```DELETE``` para eliminar tuplos da nossa relacao. O ```DELETE JOIN``` permite remover de uma ou várias relações de acordo com uma operação ```JOIN```
+
+``` sql
+DELETE T1, T2
+FROM T1
+INNER JOIN T2 ON T1.key = T2.key
+WHERE condition;
+```
 
 ### Exercícios
 Considere a Base de Dados seguinte:
@@ -78,55 +84,14 @@ Escreva o código SQL que permite obter:
 5. Disciplinas sem professores associados
 
 
-## 2. Actions
-Podemos definir ações de forma programática quando ocorrem alterações às referências. A ação por defeito é ```RESTRICT``` provocando um erro ao tentar remover ou alterar uma chave estrangeira. Podemos definir ações para a ocorrência de eventos sobre uma chave estrangeira, quando alterado (```ON UPDATE```) ou quando é removido (```ON DELETE```).
-
-O comportamento por defeito e restringir ```RESTRICT``` dar erro. Outras alternativas sao 
-- ```CASCADE``` - efeito em cascata se tuplo referencia (ou master) for removido/alterado os tuplos referenciados serão removidos/alterados
-- ```SET NULL``` - se tuplo referencia (ou master) for removido/alterado o atributo FK nos tuplos referenciados serão atualizados para valor ```NULL```
-- ```NO ACTION``` - nenhuma acao
-- ```SET DEFAULT``` -  se tuplo referencia (ou master) for removido/alterado o atributo FK nos tuplos referenciados serão atualizados para valor definido como default
-
-Exemplo de uma definicao de chave estrangeira com definicao de uma acao:
-
-``` sql
-CREATE TABLE tabela (
-  definicao-de-colunas,
-  CONSTRAINT fk_tabela_tabelaref FOREIGN KEY (coluna) REFERENCES tabela-referencia(coluna) 
-    ON UPDATE DELETE CASCADE
-);
-```
-
-Ou se alterarmos uma tabela existente adicionando restrições de integridade e com acoes diferentes para alteracao e remocao:
-
-``` sql
-ALTER TABLE tabela
-ADD CONSTRAINT fk_tabela_tabelaref FOREIGN KEY (coluna) REFERENCES tabela-referencia(coluna) 
-  ON DELETE CASCADE 
-  ON UPDATE SET NULL
-);
-```
-
-
-### Exercícios
-Altere a base de dados que criou no exercício anterior para o seguinte:
-1. Altere a BD do exercício 1.1 tal que quando um departamento é removido, todos os empregados desse departamento são removidos e para que quando o departamente é alterado perde referência para o valor null
-2. Experimente remover o departamento IT e alterar o departamento RH
-3. Altere a BD em 1.3 tal que quando um departamento é removido, os seus empregados deixam de pertencer a qualquer departamento.
-
-
-## 3. Resoluções
+## 2. Resoluções
 [Resolução dos exercícios em aula](https://github.com/ULHT-BD/aula09/blob/main/aula10_resolucao.sql)
 
 [Resolução do trabalho de casa](https://github.com/ULHT-BD/aula09/blob/main/TPC_a09_resolucao.sql)
 
 ## Bibliografia e Referências
 * [Slides aula (+material extra)](https://github.com/ULHT-BD/aula10/blob/main/Aula10.pdf) 
-* [mysqltutorial - CREATE TABLE](https://www.mysqltutorial.org/mysql-create-table/)
-* [mysqltutorial - Data Types](https://www.mysqltutorial.org/mysql-data-types.aspx)
-* [MySQL - Data Types](https://dev.mysql.com/doc/refman/8.0/en/data-types.html)
-* [mysqltutorial - Storage Engines](https://www.mysqltutorial.org/understand-mysql-table-types-innodb-myisam.aspx)
-* [w3schools - MySQL Functions](https://www.w3schools.com/mysql/mysql_ref_functions.asp)
+
 
 ## Outros
 Para dúvidas e discussões pode juntar-se ao grupo slack da turma através do [link](
