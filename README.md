@@ -87,7 +87,7 @@ Escreva o código SQL que permite obter:
 ## 2. Resoluções
 [Resolução dos exercícios em aula](https://github.com/ULHT-BD/aula09/blob/main/aula10_resolucao.sql)
 
-[Resolução do trabalho de casa](https://github.com/ULHT-BD/aula09/blob/main/TPC_a09_resolucao.sql)
+[Apoio Projeto - Remoção de Tuplos Duplicados](https://github.com/ULHT-BD/aula10/blob/main/apoio_projeto_remocao_duplicados.sql)
 
 ## Bibliografia e Referências
 * [Slides aula (+material extra)](https://github.com/ULHT-BD/aula10/blob/main/Aula10.pdf) 
